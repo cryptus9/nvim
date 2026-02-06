@@ -1,7 +1,7 @@
 return {
-  -- Mason UI for managing LSPs
+  -- 1. Mason (Installer)
   {
-    "mason-org/mason.nvim",
+    "williamboman/mason.nvim",
     config = function()
       require("mason").setup({
         ui = {
@@ -14,95 +14,86 @@ return {
       })
     end,
   },
-  -- Bridge: Mason <-> LSPConfig
+
+  -- 2. Mason-LSPConfig (Bridge)
   {
-    "mason-org/mason-lspconfig.nvim",
+    "williamboman/mason-lspconfig.nvim",
     config = function()
       require("mason-lspconfig").setup({
         ensure_installed = {
-          "lua_ls",       -- Lua
-          "dockerls",     -- Docker
-          "yamlls",       -- YAML
-          "bashls",       -- Bash
-
-          "intelephense", --PHP
-          "html",         -- HTML
-          -- "ts_ls", -- TypeScript & JavaScript
-          "vtsls",        -- TypeScript & JavaScript (alternative)
-          "angularls",    -- Angular
-          "cssls",        -- CSS (for LESS support)
-
-          -- sourcekit (Swift) is macOS native, not installable via Mason
-          -- Make sure to have Xcode installed or CLI Tools: xcode-select --install
+          "lua_ls",
+          "dockerls",
+          "yamlls",
+          "bashls",
+          "intelephense",
+          "html",
+          "vtsls",
+          "angularls", "cssls",
         },
-        automatic_enable = true,
         automatic_installation = true,
       })
     end,
   },
 
-  -- Built-in LSP Support for setting up LSP servers
+  -- 3. LSPConfig (The Connection & Keymaps)
   {
     "neovim/nvim-lspconfig",
     config = function()
-      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, border_opts)
-      vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, border_opts)
-
+      local lspconfig = require("lspconfig")
       local capabilities = vim.lsp.protocol.make_client_capabilities()
 
-      -- Lua Language Server
-      vim.lsp.config("lua_ls", {
-        filetypes = { "lua" },
-        capabilities = capabilities,
+      -- Create the Primeagen Group
+      local JannesGroup = vim.api.nvim_create_augroup("JannesGroup", {})
+
+      -- Attach the Keymaps whenever an LSP connects
+      vim.api.nvim_create_autocmd('LspAttach', {
+        group = JannesGroup,
+        callback = function(e)
+          local opts = { buffer = e.buf }
+          -- THE REMAPS
+          vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
+          vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
+          vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
+          vim.keymap.set("n", "<leader>vd", function() vim.diagnostic.open_float() end, opts)
+          vim.keymap.set("n", "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
+          vim.keymap.set("n", "<leader>vrr", function() vim.lsp.buf.references() end, opts)
+          vim.keymap.set("n", "<leader>vrn", function() vim.lsp.buf.rename() end, opts)
+          vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
+          vim.keymap.set("n", "[d", function() vim.diagnostic.goto_next() end, opts)
+          vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
+        end
       })
 
-      -- Docker
-			vim.lsp.config("dockerls", {
-				filetypes = { "dockerfile" },
-				capabilities = capabilities,
-			})
+      -- Automatically setup all servers installed via Mason
+      require("mason-lspconfig").setup_handlers({
+        function(server_name)
+          lspconfig[server_name].setup({
+            capabilities = capabilities,
+          })
+        end,
 
-			-- YAML
-			vim.lsp.config("yamlls", {
-				filetypes = { "yaml", "yml", "j2" },
-				capabilities = capabilities,
-				settings = {
-					yaml = {
-						schemas = {
-							["https://json.schemastore.org/ansible-stable-2.9.json"] = "*/playbook.yml",
-							["https://json.schemastore.org/github-workflow.json"] = ".github/workflows/*",
-						},
-					},
-				},
-			})
+        -- Specific overrides for complex servers
+        ["lua_ls"] = function()
+          lspconfig.lua_ls.setup({
+            capabilities = capabilities,
+            settings = { Lua = { diagnostics = { globals = { "vim" } } } }
+          })
+        end,
 
-      -- Bash / Shell
-			vim.lsp.config("bashls", {
-				filetypes = { "sh", "bash", "zsh" },
-				capabilities = capabilities,
-			})
-
-			-- TypeScript / JavaScript
-			vim.lsp.config("ts_ls", {
-				capabilities = capabilities,
-				filetypes = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
-			})
-
-			-- ESLint Language Server
-			vim.lsp.config("eslint", {
-				capabilities = capabilities,
-			})
-
-			-- Angular
-			vim.lsp.config("angularls", {})
-
-			-- HTML
-			vim.lsp.config("html", {})
-
-			-- CSS / LESS
-			vim.lsp.config("cssls", {
-				filetypes = { "css", "scss", "less" },
-			})
+        ["yamlls"] = function()
+          lspconfig.yamlls.setup({
+            capabilities = capabilities,
+            settings = {
+              yaml = {
+                schemas = {
+                  ["https://json.schemastore.org/ansible-stable-2.9.json"] = "*/playbook.yml",
+                  ["https://json.schemastore.org/github-workflow.json"] = ".github/workflows/*",
+                },
+              },
+            },
+          })
+        end,
+      })
     end,
   }
 }
