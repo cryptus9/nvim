@@ -61,3 +61,24 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
   end
 })
+
+-- telescope
+local builtin = require('telescope.builtin')
+
+vim.keymap.set('n', '<leader>fb', builtin.buffers, { desc = '[F]ind [B]uffers' })
+vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = '[F]ind [F]iles' })
+vim.keymap.set('n', '<leader>fg', builtin.git_files, { desc = '[F]ind [G]it files' })
+vim.keymap.set('n', '<leader>fr', builtin.oldfiles, { desc = '[F]ind [R]ecent files' })
+vim.keymap.set('n', '<leader>fs', builtin.live_grep, { desc = '[F]ind [String] in files' })
+vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = '[F]ind [D]iagnostics' })
+vim.keymap.set(
+  'n',
+  '<leader>fh',
+  ':Telescope find_files hidden=true <CR>',
+  { desc = '[F]ind [H]idden files' }
+)
+vim.keymap.set('n', '<leader>/', function()
+  builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
+    previewer = false,
+  })
+end, { desc = '[/] Fuzzily search in current buffer' })
