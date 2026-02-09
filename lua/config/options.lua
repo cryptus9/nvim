@@ -36,3 +36,10 @@ vim.opt.showmode = false
 
 -- No automatic comment insertion
 vim.cmd([[autocmd FileType * set formatoptions-=ro]])
+
+
+vim.diagnostic.config({
+  virtual_lines = {
+    current_line = true
+  }
+})
