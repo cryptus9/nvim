@@ -24,7 +24,7 @@ return {
     },
     config = function()
       local lspconfig = require("lspconfig")
-      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      require('blink.cmp').get_lsp_capabilities()
 
       require("mason-lspconfig").setup({
         ensure_installed = {

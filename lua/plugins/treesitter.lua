@@ -3,42 +3,37 @@ return {
   lazy = false,
   build = ':TSUpdate',
   config = function()
-    -- Use the official setup function
-    -- This handles the "logic" so it doesn't crash on leader gd
-    -- List of parsers to install
+    local parsers = {
+      'javascript',
+      'typescript',
+      'tsx',
+      'json',
+      'jsdoc',
+      'html',
+      'css',
+      'regex',
+      'lua',
+      'query',
+      'vim',
+      'vimdoc',
+      'php',
+    }
 
-    local configs = require('nvim-treesitter')
+    -- Install missing parsers (new API only has :TSInstall / .install())
+    require('nvim-treesitter').install(parsers)
 
-    configs.setup({
-      ensure_installed = {
-        'javascript',
-        'typescript',
-        'tsx',
-        'json',
-        'jsdoc',
-        'html',
-        'css',
-        'regex',
-        'lua',
-        'query',
-        'vim',
-        'vimdoc',
-        'php',
-      },
+    -- Enable treesitter-based highlighting for all filetypes with a parser
+    vim.api.nvim_create_autocmd('FileType', {
+      callback = function(args)
+        pcall(vim.treesitter.start, args.buf)
+      end,
+    })
 
-      -- Install missing parsers automatically
-      auto_install = true,
-
-      -- This replaces your manual autocmd logic
-      highlight = {
-        enable = true,
-        additional_vim_regex_highlighting = false,
-      },
-
-      -- Better automatic indentation
-      indent = {
-        enable = true,
-      },
+    -- Enable treesitter-based indentation
+    vim.api.nvim_create_autocmd('FileType', {
+      callback = function()
+        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+      end,
     })
   end,
 }
