@@ -17,6 +17,7 @@ return {
       'vim',
       'vimdoc',
       'php',
+      'angular'
     }
 
     -- Install missing parsers (new API only has :TSInstall / .install())
