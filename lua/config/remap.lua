@@ -17,9 +17,6 @@ vim.keymap.set({ "n", "v" }, "<leader>d", [["_d]])
 -- disables ex mode
 vim.keymap.set("n", "Q", "<nop>")
 
---format
-vim.keymap.set("n", "<leader>f", vim.lsp.buf.format)
-
 -- next/previous quickfix item
 vim.keymap.set("n", "<C-k>", "<cmd>cnext<CR>zz")
 vim.keymap.set("n", "<C-j>", "<cmd>cprev<CR>zz")

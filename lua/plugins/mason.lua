@@ -15,7 +15,20 @@ return {
     end,
   },
 
-  -- 2. Mason-LSPConfig (Bridge) + LSP setup
+  -- 2. Mason-Tool-Installer (auto-install formatters, linters, etc.)
+  {
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    dependencies = { "williamboman/mason.nvim" },
+    config = function()
+      require("mason-tool-installer").setup({
+        ensure_installed = {
+          "prettierd",
+        },
+      })
+    end,
+  },
+
+  -- 3. Mason-LSPConfig (Bridge) + LSP setup
   {
     "williamboman/mason-lspconfig.nvim",
     dependencies = {
@@ -24,7 +37,7 @@ return {
     },
     config = function()
       local lspconfig = require("lspconfig")
-      require('blink.cmp').get_lsp_capabilities()
+      local capabilities = require('blink.cmp').get_lsp_capabilities()
 
       require("mason-lspconfig").setup({
         ensure_installed = {
@@ -37,6 +50,7 @@ return {
           "vtsls",
           "angularls",
           "cssls",
+          "json-lsp",
         },
         automatic_installation = true,
         handlers = {
