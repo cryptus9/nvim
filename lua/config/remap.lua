@@ -45,7 +45,7 @@ vim.keymap.set("n", "gh", "<cmd>diffget //3<CR>")
 
 -- Attach the Keymaps whenever an LSP connects
 vim.api.nvim_create_autocmd('LspAttach', {
-  group = JannesGroup,
+  group = vim.api.nvim_create_augroup("Cydralic_LspAttach", {}),
   callback = function(e)
     local opts = { buffer = e.buf }
     -- THE REMAPS
