@@ -1,6 +1,9 @@
 return {
     "tpope/vim-fugitive",
-    config = function() 
+    config = function()
+        -- Open Fugitive (and other horizontal splits) below the current window
+        vim.opt.splitbelow = true
+
         vim.keymap.set("n", "<leader>gs", vim.cmd.Git)
 
         local ThePrimeagen_Fugitive = vim.api.nvim_create_augroup("ThePrimeagen_Fugitive", {})
