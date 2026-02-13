@@ -51,6 +51,7 @@ return {
           "angularls",
           "cssls",
           "json-lsp",
+          "eslint"
         },
         automatic_installation = true,
         handlers = {
