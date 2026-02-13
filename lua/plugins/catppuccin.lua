@@ -3,7 +3,7 @@ return {
   name = "catppuccin",
   priority = 1000,
   opts = {
-    flavour = "macchiato",
+    flavour = "latte",
   },
   config = function(_, opts)
     require("catppuccin").setup(opts)

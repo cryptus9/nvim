@@ -37,9 +37,23 @@ vim.opt.showmode = false
 -- No automatic comment insertion
 vim.cmd([[autocmd FileType * set formatoptions-=ro]])
 
+-- Custom diagnostic signs in the gutter
+local signs = {
+  { name = "DiagnosticSignError", text = "✘" },
+  { name = "DiagnosticSignWarn", text = "▲" },
+  { name = "DiagnosticSignInfo", text = "●" },
+  { name = "DiagnosticSignHint", text = "" },
+}
+
+for _, sign in ipairs(signs) do
+  vim.fn.sign_define(sign.name, { text = sign.text, texthl = sign.name, numhl = "" })
+end
 
 vim.diagnostic.config({
-  virtual_lines = {
-    current_line = true
-  }
+  virtual_text = false,                    -- no end-of-line text
+  virtual_lines = { current_line = true }, -- diagnostics on their own lines (current line only)
+  signs = true,
+  underline = true,
+  update_in_insert = false,
+  severity_sort = true,
 })
