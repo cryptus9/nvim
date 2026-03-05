@@ -22,7 +22,7 @@ return {
           filtered_items = {
             visible = false,          -- Hide hidden files
             show_hidden_count = true, -- Display count of hidden files
-            hide_dotfiles = true,     -- Hide dotfiles by default
+            hide_dotfiles = false,     -- Hide dotfiles by default
             hide_gitignore = false,   -- Show files ignored by .gitignore
             never_show = { ".DS_Store" },
           },
