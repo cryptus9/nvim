@@ -64,15 +64,6 @@ return {
     config = function()
       local capabilities = require("blink.cmp").get_lsp_capabilities()
 
-      vim.diagnostic.config({
-        virtual_text = true,
-        float = {
-          border = "rounded",
-          source = true,
-          focusable = true,
-        },
-      })
-
       vim.lsp.config("lua_ls", {
         capabilities = capabilities,
         settings = {

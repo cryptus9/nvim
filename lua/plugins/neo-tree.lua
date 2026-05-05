@@ -40,7 +40,7 @@ return {
             ["<Tab>"] = "toggle_preview", -- Toggle preview window
             ["<space>"] = false,
             ["f"] = function()
-              require("fzf-lua").files()
+              require("telescope.builtin").find_files()
             end,
             ["/"] = "fuzzy_finder",
             ["P"] = function(state)
@@ -51,19 +51,18 @@ return {
         },
       })
 
-      -- Automatically open Neo-tree for directories or when nvim is launched without arguments
-      -- vim.api.nvim_create_autocmd("VimEnter", {
-      --   callback = function(data)
-      --     local no_args = vim.fn.argc() == 0
-      --     local directory = vim.fn.isdirectory(data.file) == 1
-      --     if no_args or directory then
-      --       require("neo-tree.command").execute({ source = "filesystem", position = "left", toggle = true })
-      --       if directory then
-      --         vim.cmd.cd(data.file)
-      --       end
-      --     end
-      --   end,
-      -- })
+      vim.api.nvim_create_autocmd("VimEnter", {
+        callback = function(data)
+          local no_args = vim.fn.argc() == 0
+          local directory = vim.fn.isdirectory(data.file) == 1
+          if no_args or directory then
+            require("neo-tree.command").execute({ source = "filesystem", position = "left", toggle = true })
+            if directory then
+              vim.cmd.cd(data.file)
+            end
+          end
+        end,
+      })
     end,
   },
 }

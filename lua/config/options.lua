@@ -49,10 +49,15 @@ for _, sign in ipairs(signs) do
 end
 
 vim.diagnostic.config({
-  virtual_text = false,                    -- no end-of-line text
-  virtual_lines = { current_line = true }, -- diagnostics on their own lines (current line only)
+  virtual_text = false,
+  virtual_lines = { current_line = true },
   signs = true,
   underline = true,
   update_in_insert = false,
   severity_sort = true,
+  float = {
+    border = "rounded",
+    source = true,
+    focusable = true,
+  },
 })

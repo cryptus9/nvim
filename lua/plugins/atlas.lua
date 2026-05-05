@@ -1,7 +1,7 @@
 return {
-	-- "emrearmagan/atlas.nvim",
-	-- branch = "dev",
-	dir = "/Users/jannes.muense/Projects/nvim/atlas.nvim/",
+  "emrearmagan/atlas.nvim",
+	branch = "dev",
+  --	dir = "/Users/jannes.muense/Projects/nvim/atlas.nvim/",
 	event = "VeryLazy",
 	config = function()
 		local function open_live_command(title, cmd, on_exit)
@@ -298,7 +298,7 @@ return {
 							["ZAHN"] = {
 								story_point_field = "customfield_10035",
 								custom_fields = {
-									{ key = "customfield_10016", label = "Acceptance Criteriaa" },
+									{ key = "customfield_10016", label = "Acceptance Criteria" },
 								},
 							},
 						},

@@ -49,7 +49,7 @@ return {
     },
 
     -- file explorer
-    { "<leader>pv", vim.cmd.Ex, desc = "File Explorer" },
+    { "<leader>pv", "<cmd>Neotree toggle<CR>", desc = "File Explorer" },
 
     -- move selected lines in visual mode
     { "J", ":m '>+1<CR>gv=gv", desc = "Move line down", mode = "v" },
