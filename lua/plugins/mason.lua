@@ -35,9 +35,10 @@ return {
     config = function()
       require("mason-lspconfig").setup({
         automatic_enable = {
-          exclude = { "emmylua_ls" },
+          exclude = { "emmylua_ls", "jdtls" },
         },
         ensure_installed = {
+          "jdtls",
           "lua_ls",
           "dockerls",
           "yamlls",
