@@ -1,6 +1,6 @@
 return {
   "emrearmagan/atlas.nvim",
-	branch = "dev",
+	branch = "main",
   --	dir = "/Users/jannes.muense/Projects/nvim/atlas.nvim/",
 	event = "VeryLazy",
 	config = function()
@@ -138,6 +138,28 @@ return {
 					},
 				},
 				providers = {
+          github = {
+            cache_ttl = 300,
+
+            ---@type AtlasGitHubViewConfig[]
+            views = {
+              {
+                name = "My PRs",
+                key = "1",
+                search = "author:@me sort:updated-desc",
+              },
+              {
+                name = "Team",
+                key = "2",
+                search = "org:your-org sort:updated-desc",
+              },
+              {
+                name = "Repo",
+                key = "3",
+                search = "repo:your-org/your-repo",
+              },
+            },
+          },
 					bitbucket = {
 						user = os.getenv("BITBUCKET_USER") or "",
 						token = os.getenv("BITBUCKET_TOKEN") or "",
