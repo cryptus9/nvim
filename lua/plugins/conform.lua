@@ -27,6 +27,7 @@ return {
         yaml = { "prettierd", "prettier", stop_after_first = true },
         vue = { "prettierd", "prettier", stop_after_first = true },
         angular = { "prettierd", "prettier", stop_after_first = true },
+        python = { "ruff_format" },
       },
       -- Fall back to LSP formatting for filetypes not listed above
       default_format_opts = {

@@ -23,6 +23,7 @@ return {
       require("mason-tool-installer").setup({
         ensure_installed = {
           "prettierd",
+          "ruff",
         },
       })
     end,
@@ -40,6 +41,7 @@ return {
         ensure_installed = {
           "jdtls",
           "lua_ls",
+          "pyright",
           "dockerls",
           "yamlls",
           "bashls",
@@ -96,6 +98,16 @@ return {
       vim.lsp.config("cssls", { capabilities = capabilities })
       vim.lsp.config("jsonls", { capabilities = capabilities })
       vim.lsp.config("eslint", { capabilities = capabilities })
+      vim.lsp.config("pyright", {
+        capabilities = capabilities,
+        settings = {
+          python = {
+            analysis = {
+              typeCheckingMode = "basic",
+            },
+          },
+        },
+      })
 
       vim.lsp.enable({
         "lua_ls",
@@ -109,6 +121,7 @@ return {
         "cssls",
         "jsonls",
         "eslint",
+        "pyright",
       })
     end,
   },
